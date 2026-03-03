@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Wolf - Panel</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --bg:#0d1117;
+      --panel:#001f3f;
+      --panel2:#0f1c2e;
+      --line:#003366;
+      --accent:#a0c4ff;
+      --white:#ffffff;
+      --shadow: 0 10px 28px rgba(0,0,0,.55);
+      --radius:18px;
+    }
+
+    /* ✅ Force Bootstrap “muted/secondary” -> BLANC */
+    :root{
+      --bs-body-color: #ffffff;
+      --bs-secondary-color: #ffffff;
+      --bs-tertiary-color: #ffffff;
+      --bs-body-color-rgb: 255,255,255;
+      --bs-secondary-color-rgb: 255,255,255;
+      --bs-tertiary-color-rgb: 255,255,255;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--white) !important;
+      font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+      margin:0;
+    }
+
+    /* ✅ anti texte gris bootstrap */
+    .text-muted,
+    .text-secondary,
+    .text-body-secondary,
+    .text-body-tertiary,
+    .small,
+    small,
+    .muted, .soft, .mini, .small-note{
+      color: var(--white) !important;
+      opacity: 1 !important;
+    }
+
+    /* ✅ liens/labels/table */
+    a, label, th, td, .form-text { color: var(--white) !important; }
+
+    .sidebar{
+      background:var(--panel);
+      height:100vh;
+      width:290px;
+      position:fixed;
+      border-right:2px solid var(--line);
+      padding-top:20px;
+      overflow-y:auto;
+    }
+
+    .sidebar-logo{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:10px 0 14px 0;
+    }
+    .sidebar-logo img{
+      width:120px;
+      height:120px;
+      object-fit:cover;
+      border-radius:20px;
+      border:2px solid rgba(160,196,255,.35);
+      box-shadow:0 0 25px rgba(0,0,0,.6);
+    }
+
+    .nav-link{
+      color:var(--accent)!important;
+      font-size:1.08rem;
+      padding:16px 24px!important;
+      border-radius:14px;
+      margin:10px 16px;
+      transition:all .2s;
+      cursor:pointer;
+    }
+    .nav-link:hover,.nav-link.active{
+      background:var(--line);
+      color:var(--white)!important;
+      box-shadow:0 0 18px rgba(0,63,102,.55);
+    }
+
+    main{
+      margin-left:290px;
+      padding:34px;
+    }
+
+    .card{
+      border:none;
+      box-shadow:var(--shadow);
+      background:var(--panel)!important;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      height:100%;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(160,196,255,.22);
+      background:rgba(15,28,46,.85);
+      color:var(--white);
+      font-weight:700;
+    }
+    .pill i{ color:var(--accent); }
+
+    .btn-wolf{
+      border:1px solid rgba(160,196,255,.35);
+      background:var(--panel2);
+      color:var(--accent);
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:800;
+    }
+    .btn-wolf:hover{ background:#0b1626; color:var(--white); }
+
+    .btn-modif{
+      background:var(--accent);
+      color:#001f3f !important;
+      border:none;
+      padding:8px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:.92rem;
+      font-weight:900;
+    }
+    .btn-modif:hover{ background:var(--white); }
+
+    .modal-content{ background:var(--panel2); border:1px solid rgba(160,196,255,.25); color:var(--white); border-radius:16px; }
+    .form-control, .form-select{
+      background:#0b1626 !important;
+      border:1px solid rgba(160,196,255,.25);
+      color:var(--white) !important;
+      border-radius:14px;
+      font-weight:700;
+    }
+    .form-control::placeholder{ color: rgba(255,255,255,.6) !important; }
+    .form-control:focus, .form-select:focus{ box-shadow:none; border-color:rgba(160,196,255,.55); }
+    .btn-close-white{ filter: invert(1); }
+
+    .member-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; align-items:stretch; }
+    .member-card{ grid-column: span 6; }
+    @media (max-width: 1200px){ .member-card{ grid-column: span 12; } }
+
+    .member-inner{ display:flex; gap:14px; align-items:flex-start; }
+    .member-icon{
+      width:46px; height:46px;
+      border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(160,196,255,.10);
+      border:1px solid rgba(160,196,255,.22);
+      flex: 0 0 auto;
+    }
+    .member-icon i{ color:var(--accent); font-size:18px; }
+
+    .kv{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px;
+      border-radius:14px;
+      background:rgba(15,28,46,.95);
+      border:1px solid rgba(160,196,255,.20);
+      font-weight:800;
+      color:var(--white) !important;
+    }
+    .tag i{ color:var(--accent); }
+
+    .podium{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; }
+    .pod{ grid-column: span 4; }
+    @media (max-width: 992px){ .pod{ grid-column: span 12; } }
+
+    .rank-1{ color: gold; font-weight: 1000; }
+    .rank-2{ color: silver; font-weight: 900; }
+    .rank-3{ color: #cd7f32; font-weight: 900; }
+
+    .list-row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border-radius:16px;
+      background:rgba(15,28,46,.92);
+      border:1px solid rgba(160,196,255,.16);
+      margin-bottom:10px;
+      color:var(--white) !important;
+    }
+    .list-row:hover{ background:rgba(15,28,46,1); border-color: rgba(160,196,255,.28); }
+
+    .num{
+      width:40px; height:40px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:14px;
+      background:rgba(160,196,255,.10);
+      border:1px solid rgba(160,196,255,.18);
+      font-weight:1000;
+      color:var(--white) !important;
+    }
+
+    .history-item{
+      background:rgba(15,28,46,.95);
+      border:1px solid rgba(160,196,255,.18);
+      border-radius:16px;
+      padding:12px 14px;
+      color:var(--white) !important;
+    }
+    .delta-plus{ color:#7CFFB2; font-weight:1000; }
+    .delta-minus{ color:#ff7c7c; font-weight:1000; }
+    .delta-net{ color:gold; font-weight:1000; }
+
+    .divider{ height:1px; background:rgba(160,196,255,.12); margin:16px 0; }
+
+    .badge-admin{ background:rgba(255,215,0,.12); border:1px solid rgba(255,215,0,.35); color:gold !important; }
+    .badge-visitor{ background:rgba(160,196,255,.12); border:1px solid rgba(160,196,255,.35); color:var(--accent) !important; }
+
+    table.table-dark { --bs-table-bg: transparent; }
+    .table> :not(caption)>*>*{ color:#fff !important; }
+    .table thead th{ color:#fff !important; }
+
+    .rules-logo{
+      width:100%;
+      max-width:420px;
+      border-radius:25px;
+      box-shadow:0 0 35px rgba(0,0,0,.7);
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <img id="sidebarLogo" alt="The Wolf Logo"/>
+  </div>
+
+  <div class="px-3 pb-3 d-flex flex-column gap-2">
+    <div id="mode-pill" class="pill"><i class="fa-solid fa-eye"></i><span>Mode visiteur</span></div>
+    <button class="btn-wolf w-100" id="admin-btn"><i class="fa-solid fa-key me-2"></i>Mode admin</button>
+    <button class="btn-wolf w-100" id="logout-btn" style="display:none;"><i class="fa-solid fa-right-from-bracket me-2"></i>Quitter admin</button>
+  </div>
+
+  <ul class="nav flex-column">
+    <li><a class="nav-link active" data-section="membres"><i class="fas fa-users me-3"></i>Membres</a></li>
+    <li><a class="nav-link" data-section="banque"><i class="fas fa-dollar-sign me-3"></i>Banque famille</a></li>
+    <li><a class="nav-link" data-section="points"><i class="fas fa-trophy me-3"></i>Points famille</a></li>
+    <li><a class="nav-link" data-section="classement"><i class="fas fa-ranking-star me-3"></i>Classement</a></li>
+    <li><a class="nav-link" data-section="contribution"><i class="fas fa-hand-holding-dollar me-3"></i>Contribution</a></li>
+    <li><a class="nav-link" data-section="playtime"><i class="fas fa-clock me-3"></i>Playtime</a></li>
+    <li><a class="nav-link" data-section="docs"><i class="fas fa-folder me-3"></i>Docs & Règles</a></li>
+    <li><a class="nav-link" data-section="settings"><i class="fas fa-gear me-3"></i>Paramètres</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+    <div class="pill">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>Panel famille</span>
+      <span id="family-pill"></span>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+      <button id="refresh-btn" class="btn btn-outline-info">
+        <i class="fa-solid fa-rotate me-2"></i>Rafraîchir
+      </button>
+
+      <button id="clear-cache-btn" class="btn btn-outline-light">
+        <i class="fa-solid fa-broom me-2"></i>Vider cache API
+      </button>
+
+      <button id="lite-toggle-btn" class="btn btn-outline-warning">
+        <i class="fa-solid fa-feather me-2"></i>Mode léger : OFF
+      </button>
+    </div>
+  </div>
+
+  <div id="content-area"></div>
+</main>
+
+<!-- Admin modal -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-2">
+      <div class="modal-header border-0">
+        <h5 class="modal-title"><i class="fa-solid fa-lock me-2"></i>Connexion admin</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input id="admin-pass" type="password" class="form-control" inputmode="numeric" maxlength="4" placeholder="••••"/>
+        <div class="mt-3 d-flex gap-2">
+          <button id="admin-login" class="btn btn-info w-100"><i class="fa-solid fa-check me-2"></i>Valider</button>
+        </div>
+        <div id="admin-error" class="mt-2 text-danger" style="display:none;">Mot de passe incorrect.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* =========================
+   LOGO BASE64 (colle ton BASE64 ici)
+   ⚠️ PAS un nom de fichier .png
+========================= */
+const LOGO_BASE64 = ""; // <-- colle ici le vrai base64 (sans "data:image/png;base64,")
+
+/* Token playtime si nécessaire (laisse vide si pas besoin) */
+const PLAYTIME_TOKEN = ""; // ex: "Bearer xxxxx" ou "xxxx"
+
+/* Endpoints (garde cette base) */
+const API_BASE = "https://api.lyg.fr/api";
+
+/* =========================
+   LOGO INIT
+========================= */
+(function initLogo(){
+  const img = document.getElementById("sidebarLogo");
+  if (LOGO_BASE64 && LOGO_BASE64.length > 50){
+    img.src = "data:image/png;base64," + LOGO_BASE64;
+  } else {
+    img.src = "data:image/svg+xml;base64," + btoa(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+        <rect width="120" height="120" rx="20" fill="#0f1c2e"/>
+        <text x="50%" y="54%" text-anchor="middle" fill="#a0c4ff" font-size="18" font-family="Segoe UI">THE WOLF</text>
+      </svg>
+    `);
+  }
+})();
+
+/* =========================
+   CONFIG
+========================= */
+const familyName = 'Wolf';
+document.getElementById('family-pill').textContent = ' · ' + familyName;
+
+const FAMILY_IDS = [
+  'Esperados','Maness','Colman','Kittygang','Wolf','Bliyatzz','Pinkpanther','varzak','Blackwall','Cosanostra','Rollin','Bratva','Bako'
+];
+
+/* =========================
+   ROLE / HIERARCHY
+========================= */
+const WOLF_HIERARCHY = {
+  "Fondateur": ["👑 The Alpha Wolf","👑 The Beta Wolf"],
+  "Haut Commandement": ["🏛️ The Black Wolf","🏙️ The Iron Wolf"],
+  "Leader": ["🎖️ The Red Wolf","🪖 The Night Wolf","📋 The Grey Wolf"],
+  "Gérant": ["🧭 The Steel Wolf","♟️ The Shadow Wolf"],
+  "Élite": ["🗣️ The Street Wolf","🌍 The Young Wolf","🔮 The Cub Wolf"],
+  "Confirmé": ["🧠 The Veteran Wolf","🛡️ The Master Wolf","⚜️ The Senior Wolf","🏅 The Expert Wolf"],
+  "Stagiaire": ["🎓 The Baby Wolf","📘 The Apprentice Wolf","🕯️ The Recruit Wolf","🐣 The Wolf"]
+};
+const FOUNDERS = [
+  { role: "👑 The Alpha Wolf", tag: "@Mickael Stone" },
+  { role: "👑 The Beta Wolf",  tag: "@Zakar Wolf" }
+];
+
+/* =========================
+   ADMIN PASS (modifiable via Paramètres)
+   - PIN admin = 4 chiffres
+   - Code sécurité (6 chiffres) = 091103
+========================= */
+const ADMIN_HASH_KEY = "wolf_admin_pass_sha256_v1";
+const SECURITY_CODE = "091103";
+/* SHA-256("1972") par défaut */
+const DEFAULT_ADMIN_PASS_SHA256 = "0a95adbf8581859ae0cc477127abeaf4ad89916405c41855af8fbc482e1634e8";
+
+function getAdminHash(){
+  return localStorage.getItem(ADMIN_HASH_KEY) || DEFAULT_ADMIN_PASS_SHA256;
+}
+
+function isAdmin(){ return sessionStorage.getItem('wolf_is_admin') === '1'; }
+function setAdmin(v){ sessionStorage.setItem('wolf_is_admin', v ? '1' : '0'); }
+
+async function sha256Hex(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function refreshModeUI(){
+  const pill = document.getElementById('mode-pill');
+  const adminBtn = document.getElementById('admin-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  if (isAdmin()){
+    pill.className = 'pill badge-admin';
+    pill.innerHTML = '<i class="fa-solid fa-crown"></i><span>Mode admin</span>';
+    adminBtn.style.display = 'none';
+    logoutBtn.style.display = 'block';
+  } else {
+    pill.className = 'pill badge-visitor';
+    pill.innerHTML = '<i class="fa-solid fa-eye"></i><span>Mode visiteur</span>';
+    adminBtn.style.display = 'block';
+    logoutBtn.style.display = 'none';
+  }
+}
+refreshModeUI();
+
+const adminModal = new bootstrap.Modal(document.getElementById('adminModal'));
+document.getElementById('admin-btn').addEventListener('click', () => {
+  document.getElementById('admin-pass').value = '';
+  document.getElementById('admin-error').style.display = 'none';
+  adminModal.show();
+});
+document.getElementById('admin-login').addEventListener('click', async () => {
+  const v = (document.getElementById('admin-pass').value || '').trim();
+  const h = await sha256Hex(v);
+  if (h === getAdminHash()){
+    setAdmin(true);
+    refreshModeUI();
+    adminModal.hide();
+    loadSection(document.querySelector('.nav-link.active').dataset.section);
+  } else {
+    document.getElementById('admin-error').style.display = 'block';
+  }
+});
+document.getElementById('logout-btn').addEventListener('click', () => {
+  setAdmin(false);
+  refreshModeUI();
+  loadSection(document.querySelector('.nav-link.active').dataset.section);
+});
+
+/* =========================
+   MODE LÉGER + CACHE
+========================= */
+const LITE_KEY = "wolf_lite_mode_v1";
+function isLiteMode(){ return localStorage.getItem(LITE_KEY) === "1"; }
+function setLiteMode(v){ localStorage.setItem(LITE_KEY, v ? "1" : "0"); }
+
+let CACHE_TTL_MS = 15000;
+let MIN_GAP_MS   = 480;
+let lastFetchTs  = 0;
+
+function applyRateProfile(){
+  if (isLiteMode()){
+    CACHE_TTL_MS = 60000;
+    MIN_GAP_MS   = 900;
+  } else {
+    CACHE_TTL_MS = 15000;
+    MIN_GAP_MS   = 480;
+  }
+}
+applyRateProfile();
+
+function refreshLiteButton(){
+  const btn = document.getElementById("lite-toggle-btn");
+  if (!btn) return;
+  btn.innerHTML = isLiteMode()
+    ? '<i class="fa-solid fa-feather me-2"></i>Mode léger : ON'
+    : '<i class="fa-solid fa-feather me-2"></i>Mode léger : OFF';
+}
+refreshLiteButton();
+
+/* =========================
+   STORAGE (pseudos + hierarchy + roles)
+========================= */
+const STORE_KEY = 'wolf_member_meta_v2';
+function loadMemberMeta(){ try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch { return {}; } }
+function saveMemberMeta(meta){ localStorage.setItem(STORE_KEY, JSON.stringify(meta)); }
+function getMetaFor(steamid){ const meta = loadMemberMeta(); return meta[steamid] || {}; }
+function setMetaFor(steamid, patch){
+  const meta = loadMemberMeta();
+  meta[steamid] = { ...(meta[steamid] || {}), ...patch };
+  saveMemberMeta(meta);
+}
+
+/* =========================
+   API FETCH: anti-429 (queue + throttle + retry + cache)
+========================= */
+const API_CACHE = new Map();
+function clearApiCache(){ API_CACHE.clear(); lastFetchTs = 0; }
+
+const fetchQueue = [];
+let queueRunning = false;
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+async function queuedFetch(url, options = {}){
+  return new Promise((resolve, reject) => {
+    fetchQueue.push({ url, options, resolve, reject });
+    if (!queueRunning) runQueue();
+  });
+}
+
+async function runQueue(){
+  queueRunning = true;
+  while(fetchQueue.length){
+    const job = fetchQueue.shift();
+    const wait = Math.max(0, MIN_GAP_MS - (Date.now() - lastFetchTs));
+    if (wait) await sleep(wait);
+    lastFetchTs = Date.now();
+
+    try {
+      const data = await fetchWithRetry(job.url, job.options);
+      job.resolve(data);
+    } catch (e) {
+      job.reject(e);
+    }
+  }
+  queueRunning = false;
+}
+
+async function fetchWithRetry(url, options={}, maxRetry=6){
+  const cached = API_CACHE.get(url);
+  if (cached && (Date.now() - cached.ts) < CACHE_TTL_MS) return cached.data;
+
+  let attempt = 0;
+  let backoff = 650;
+
+  while(true){
+    attempt++;
+    const res = await fetch(url, options);
+
+    if (res.ok){
+      const json = await res.json();
+      API_CACHE.set(url, { ts: Date.now(), data: json });
+      return json;
+    }
+
+    if (res.status === 404){
+      throw new Error('HTTP_404');
+    }
+
+    if (res.status === 429 && attempt <= maxRetry){
+      const ra = res.headers.get('Retry-After');
+      const waitMs = ra ? (parseFloat(ra) * 1000) : backoff;
+      await sleep(waitMs);
+      backoff = Math.min(backoff * 1.7, 7000);
+      continue;
+    }
+
+    throw new Error('HTTP_' + res.status);
+  }
+}
+
+async function fetchAPI(url, options){
+  try { return await queuedFetch(url, options); }
+  catch (e){ return { error:true, code:e.message }; }
+}
+
+/* Buttons */
+document.getElementById("clear-cache-btn").addEventListener("click", () => {
+  clearApiCache();
+  loadSection(document.querySelector(".nav-link.active").dataset.section);
+});
+document.getElementById("lite-toggle-btn").addEventListener("click", () => {
+  setLiteMode(!isLiteMode());
+  applyRateProfile();
+  refreshLiteButton();
+  loadSection(document.querySelector(".nav-link.active").dataset.section);
+});
+
+/* =========================
+   HELPERS
+========================= */
+function escapeHtml(s){ return String(s ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;'); }
+function moneyFR(n){ try { return Number(n||0).toLocaleString('fr-FR'); } catch { return String(n||0); } }
+
+function humanDate(ts){
+  const d = new Date(ts);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const that = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const diffDays = Math.round((today - that) / 86400000);
+  if (diffDays === 0) return "aujourd'hui";
+  if (diffDays === 1) return "hier";
+  return d.toLocaleDateString('fr-FR');
+}
+
+function fmtSecondsToHMS(sec){
+  const s = Number(sec)||0;
+  const h = Math.floor(s/3600);
+  const m = Math.floor((s%3600)/60);
+  return `${h}h ${String(m).padStart(2,'0')}m`;
+}
+
+/* ✅ POINTS NORMALIZER (fiable)
+   - "192.15" => "19215"
+   - "19215.032958..." => "19215"
+   - "19 215 032 ..." => enlève espaces
+*/
+function normalizePoints(v){
+  if (v === null || v === undefined) return "0";
+
+  const str = (typeof v === "string") ? v : String(v);
+
+  // nettoie espaces
+  const t = str.replace(/\s+/g,'').trim();
+  if (!t) return "0";
+
+  // cas exact "ddd.dd" ou "ddd,dd" => on supprime séparateur (192.15 => 19215)
+  if (/^\d{1,3}[.,]\d{2}$/.test(t)){
+    return t.replace(/[.,]/,'');
+  }
+
+  // cas float long => on garde partie entière
+  if (/[.,]/.test(t)){
+    return t.split(/[.,]/)[0] || "0";
+  }
+
+  // entier
+  return t;
+}
+
+/* =========================
+   FAMILY ID init
+========================= */
+let familyId = null;
+
+async function initFamilyId(){
+  const membersData = await fetchAPI(`${API_BASE}/darkrp/familles/${familyName}/members`);
+  if (!membersData.error && Array.isArray(membersData.data) && membersData.data.length > 0){
+    familyId = membersData.data[0].family || familyName;
+  } else {
+    familyId = familyName;
+  }
+}
+
+/* =========================
+   AUTO PSEUDO via global/player/{steamid}
+   -> remplit (non défini) automatiquement
+========================= */
+const PSEUDO_CACHE_KEY = "wolf_pseudo_cache_v2";
+function loadPseudoCache(){ try { return JSON.parse(localStorage.getItem(PSEUDO_CACHE_KEY) || '{}'); } catch { return {}; } }
+function savePseudoCache(c){ localStorage.setItem(PSEUDO_CACHE_KEY, JSON.stringify(c)); }
+
+async function fetchPseudoForSteamid(steamid){
+  const cache = loadPseudoCache();
+  if (cache[steamid]) return cache[steamid];
+
+  const r = await fetchAPI(`${API_BASE}/global/player/${steamid}`);
+  if (!r.error){
+    // Support formats: {data:{last_name}} ou {data:{player_name}} ou racine
+    const d = r.data || {};
+    const pseudo = d.last_name || d.player_name || r.last_name || r.player_name;
+    if (pseudo){
+      cache[steamid] = pseudo;
+      savePseudoCache(cache);
+      return pseudo;
+    }
+  }
+  return null;
+}
+
+/* =========================
+   BANK TRACKER (historique auto via delta total)
+========================= */
+const BANK_KEY = 'wolf_bank_tracker_v2';
+function loadBankTracker(){ try { return JSON.parse(localStorage.getItem(BANK_KEY) || '{"lastTotal":null,"history":[]}'); } catch { return { lastTotal:null, history:[] }; } }
+function saveBankTracker(obj){ localStorage.setItem(BANK_KEY, JSON.stringify(obj)); }
+function pushBankDelta(delta, newTotal){
+  const t = loadBankTracker();
+  t.history.unshift({ ts: Date.now(), delta: Number(delta)||0, total: Number(newTotal)||0 });
+  t.history = t.history.slice(0, 600);
+  t.lastTotal = Number(newTotal)||0;
+  saveBankTracker(t);
+}
+
+/* =========================
+   SEMAINE (samedi 19h30 → samedi 19h30)
+========================= */
+function getSaturday1930Start(nowMs = Date.now()){
+  const d = new Date(nowMs);
+  const day = d.getDay(); // 0 dim ... 6 sam
+  const diffToSat = (day - 6 + 7) % 7;
+  const sat = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  sat.setDate(sat.getDate() - diffToSat);
+  sat.setHours(19,30,0,0);
+  let start = sat.getTime();
+  if (nowMs < start) start -= 7*86400000;
+  return start;
+}
+
+/* =========================
+   Contribution (AUTO via banklogs)
+   + archive locale si tu veux garder un historique visuel
+========================= */
+const CONTRIB_STORE_KEY = "wolf_contrib_archive_v1";
+function loadContribArchive(){
+  try { return JSON.parse(localStorage.getItem(CONTRIB_STORE_KEY) || '{"weekStart":0,"archives":[]}'); }
+  catch { return { weekStart:0, archives:[] }; }
+}
+function saveContribArchive(x){ localStorage.setItem(CONTRIB_STORE_KEY, JSON.stringify(x)); }
+function ensureContribWeek(){
+  const ws = getSaturday1930Start(Date.now());
+  const a = loadContribArchive();
+  if (!a.weekStart){
+    a.weekStart = ws; saveContribArchive(a); return a;
+  }
+  if (a.weekStart !== ws){
+    // on archive l'ancien “résumé” (si tu veux)
+    a.archives.unshift({ start: a.weekStart, archivedAt: Date.now() });
+    a.weekStart = ws;
+    a.archives = a.archives.slice(0, 20);
+    saveContribArchive(a);
+  }
+  return a;
+}
+
+/* =========================
+   Playtime (AUTO) + archive locale (snapshot)
+========================= */
+const PLAY_KEY = 'wolf_playtime_v1';
+function loadPlayStore(){ try { return JSON.parse(localStorage.getItem(PLAY_KEY) || 'null'); } catch { return null; } }
+function savePlayStore(s){ localStorage.setItem(PLAY_KEY, JSON.stringify(s)); }
+
+function ensurePlayStore(){
+  const start = getSaturday1930Start(Date.now());
+  let store = loadPlayStore();
+  if (!store || !store.week || !Array.isArray(store.archives)){
+    store = { week:{ start, snapshot:{} }, archives:[] };
+    savePlayStore(store);
+    return store;
+  }
+  if (store.week.start !== start){
+    store.archives.unshift({
+      start: store.week.start,
+      archivedAt: Date.now(),
+      snapshot: store.week.snapshot || {}
+    });
+    store.week = { start, snapshot:{} };
+    store.archives = store.archives.slice(0, 20);
+    savePlayStore(store);
+  }
+  return store;
+}
+
+/* =========================
+   NAV
+========================= */
+const menuItems = document.querySelectorAll('.nav-link');
+const contentArea = document.getElementById('content-area');
+
+menuItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    menuItems.forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    loadSection(item.dataset.section);
+  });
+});
+
+document.getElementById('refresh-btn').addEventListener('click', () => {
+  loadSection(document.querySelector('.nav-link.active').dataset.section);
+});
+
+/* =========================
+   SECTIONS
+========================= */
+async function loadSection(section){
+  if (familyId === null) await initFamilyId();
+  ensureContribWeek();
+  ensurePlayStore();
+
+  if (section === 'membres') return loadMembres();
+  if (section === 'banque') return loadBanque();
+  if (section === 'points') return loadPoints();
+  if (section === 'classement') return loadClassement();
+  if (section === 'contribution') return loadContribution();
+  if (section === 'playtime') return loadPlaytime();
+  if (section === 'docs') return loadDocs();
+  if (section === 'settings') return loadSettings();
+}
+
+/* UI chunks */
+function renderFoundersBanner(){
+  return `
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="text-uppercase small fw-bold" style="color:var(--accent) !important;">Fondateurs</div>
+        <div class="mt-2 d-flex flex-wrap gap-2">
+          ${FOUNDERS.map(f => `
+            <span class="pill">
+              <i class="fa-solid fa-crown"></i>
+              <span>${escapeHtml(f.role)}</span>
+              <span>${escapeHtml(f.tag)}</span>
+            </span>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderHierarchySelect(current=""){
+  const keys = Object.keys(WOLF_HIERARCHY);
+  const opts = keys.map(k => `<option value="${escapeHtml(k)}" ${k===current?'selected':''}>${escapeHtml(k)}</option>`).join('');
+  return `<select class="form-select form-select-sm hierarchy-select">${opts}</select>`;
+}
+function renderRoleSelectByHierarchy(hierarchy, currentRole=""){
+  const roles = WOLF_HIERARCHY[hierarchy] || [];
+  const opts = roles.map(r => `<option value="${escapeHtml(r)}" ${r===currentRole?'selected':''}>${escapeHtml(r)}</option>`).join('');
+  return `<select class="form-select form-select-sm role-select-inner">${opts}</select>`;
+}
+
+/* -------- Membres -------- */
+async function loadMembres(){
+  const data = await fetchAPI(`${API_BASE}/darkrp/familles/${familyName}/members`);
+  if (data.error){
+    contentArea.innerHTML = `
+      ${renderFoundersBanner()}
+      <div class="card"><div class="card-body">
+        <div class="alert alert-warning mb-0"><strong>Erreur :</strong> impossible de charger les membres.</div>
+      </div></div>
+    `;
+    return;
+  }
+
+  const members = Array.isArray(data.data) ? data.data : [];
+  members.sort((a,b)=> (b.owner?1:0) - (a.owner?1:0));
+
+  // ✅ Auto pseudo fill (SteamID -> Nom RP) + cache
+  const metaNow = loadMemberMeta();
+  for (const m of members){
+    const steam = m.steamid;
+    const meta = metaNow[steam] || {};
+    if (!meta.pseudo || meta.pseudo === '(non défini)'){
+      const p = await fetchPseudoForSteamid(steam);
+      if (p) setMetaFor(steam, { pseudo: p });
+    }
+  }
+
+  const adminBadge = isAdmin()
+    ? `<span class="pill badge-admin"><i class="fa-solid fa-crown"></i><span>Admin</span></span>`
+    : `<span class="pill badge-visitor"><i class="fa-solid fa-eye"></i><span>Visiteur</span></span>`;
+
+  contentArea.innerHTML = `
+    ${renderFoundersBanner()}
+
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+      <h1 class="h2 mb-0">Membres</h1>
+      ${adminBadge}
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="fw-bold" style="color:var(--accent) !important;">Total membres</div>
+            <div class="display-6 fw-bold">${members.length}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="pill"><i class="fa-solid fa-circle-info"></i><span>Affichage</span></div>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn-wolf" id="view-cards"><i class="fa-solid fa-grip me-2"></i>Cartes</button>
+              <button class="btn-wolf" id="view-table"><i class="fa-solid fa-table me-2"></i>Table</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="members-view"></div>
+  `;
+
+  function buildCards(){
+    const cards = members.map(m => {
+      const steam = m.steamid;
+      const meta = getMetaFor(steam);
+      const pseudo = meta.pseudo || '(non défini)';
+      const hierarchy = meta.hierarchy || (m.owner ? 'Fondateur' : 'Stagiaire');
+      const defaultRole = (WOLF_HIERARCHY[hierarchy]||[])[0] || '';
+      const role = meta.role || (m.owner ? '👑 The Alpha Wolf' : defaultRole);
+      const canEdit = isAdmin();
+
+      return `
+        <div class="card member-card">
+          <div class="card-body">
+            <div class="member-inner">
+              <div class="member-icon"><i class="fa-solid fa-user"></i></div>
+              <div class="w-100">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                  <div>
+                    <div class="fw-bold" style="color:var(--accent) !important;">${escapeHtml(pseudo)}</div>
+                    <div class="fw-bold">SteamID: ${escapeHtml(steam)}</div>
+                  </div>
+                  <span class="pill"><i class="fa-solid fa-shield"></i><span>${escapeHtml(hierarchy)}</span></span>
+                </div>
+
+                <div class="kv">
+                  <span class="tag"><i class="fa-solid fa-id-badge"></i><span>${escapeHtml(role)}</span></span>
+                </div>
+
+                <div class="divider"></div>
+
+                ${
+                  canEdit ? `
+                    <div class="row g-2 align-items-end" data-steam="${escapeHtml(steam)}">
+                      <div class="col-md-4">
+                        <label class="fw-bold mb-1">Pseudo</label>
+                        <input class="form-control form-control-sm pseudo-input" value="${escapeHtml(meta.pseudo||'')}" placeholder="Pseudo..."/>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="fw-bold mb-1">Hiérarchie</label>
+                        ${renderHierarchySelect(hierarchy)}
+                      </div>
+                      <div class="col-md-4">
+                        <label class="fw-bold mb-1">Rôle</label>
+                        <div class="role-cell">${renderRoleSelectByHierarchy(hierarchy, role)}</div>
+                      </div>
+                      <div class="col-12 d-flex justify-content-end mt-2">
+                        <button class="btn-modif save-member"><i class="fa-solid fa-floppy-disk me-2"></i>Enregistrer</button>
+                      </div>
+                    </div>
+                  ` : `
+                    <div class="pill"><i class="fa-solid fa-eye"></i><span>Lecture seule</span></div>
+                  `
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('members-view').innerHTML = `<div class="member-grid">${cards}</div>`;
+
+    if (isAdmin()){
+      document.querySelectorAll('[data-steam]').forEach(box => {
+        const hierarchySel = box.querySelector('.hierarchy-select');
+        const roleCell = box.querySelector('.role-cell');
+
+        hierarchySel.addEventListener('change', () => {
+          const h = hierarchySel.value;
+          const currentRole = (WOLF_HIERARCHY[h]||[])[0] || '';
+          roleCell.innerHTML = renderRoleSelectByHierarchy(h, currentRole);
+        });
+
+        box.querySelector('.save-member').addEventListener('click', () => {
+          const steam = box.getAttribute('data-steam');
+          const pseudo = box.querySelector('.pseudo-input').value.trim();
+          const hierarchy = box.querySelector('.hierarchy-select').value;
+          const role = box.querySelector('.role-select-inner')?.value || '';
+          setMetaFor(steam, { pseudo, hierarchy, role });
+
+          const btn = box.querySelector('.save-member');
+          btn.textContent = "✅ Sauvé";
+          setTimeout(()=> btn.innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Enregistrer', 900);
+        });
+      });
+    }
+  }
+
+  function buildTable(){
+    const rows = members.map(m => {
+      const steam = m.steamid;
+      const meta = getMetaFor(steam);
+      const pseudo = meta.pseudo || '(non défini)';
+      const hierarchy = meta.hierarchy || (m.owner ? 'Fondateur' : 'Stagiaire');
+      const defaultRole = (WOLF_HIERARCHY[hierarchy]||[])[0] || '';
+      const role = meta.role || (m.owner ? '👑 The Alpha Wolf' : defaultRole);
+
+      return `
+        <tr>
+          <td>${escapeHtml(steam)}</td>
+          <td class="fw-bold">${escapeHtml(pseudo)}</td>
+          <td>${escapeHtml(hierarchy)}</td>
+          <td>${escapeHtml(role)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    document.getElementById('members-view').innerHTML = `
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>SteamID</th>
+                  <th>Pseudo</th>
+                  <th>Hiérarchie</th>
+                  <th>Rôle</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  buildCards();
+  document.getElementById('view-cards').addEventListener('click', buildCards);
+  document.getElementById('view-table').addEventListener('click', buildTable);
+}
+
+/* -------- Banque -------- */
+async function loadBanque(){
+  const data = await fetchAPI(`${API_BASE}/darkrp/familles/${familyId}/infos`);
+  if (data.error){
+    contentArea.innerHTML = `<div class="card"><div class="card-body"><div class="alert alert-warning mb-0"><strong>Erreur :</strong> impossible de charger la banque.</div></div></div>`;
+    return;
+  }
+
+  const money = (data.money ?? data.data?.money ?? 0);
+
+  const tracker = loadBankTracker();
+  if (typeof money === 'number'){
+    if (tracker.lastTotal === null){
+      tracker.lastTotal = money;
+      saveBankTracker(tracker);
+    } else if (money !== tracker.lastTotal){
+      const delta = money - tracker.lastTotal;
+      pushBankDelta(delta, money);
+    }
+  }
+
+  const t = loadBankTracker();
+  const hist = Array.isArray(t.history) ? t.history : [];
+
+  const todayYmd = new Date().toISOString().slice(0,10);
+  const weekAgo = new Date(Date.now() - 6*86400000).toISOString().slice(0,10);
+
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-3">Banque famille</h1>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="fw-bold" style="color:var(--accent) !important;">Total</div>
+            <div class="display-6 fw-bold">${moneyFR(money)} $</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="row g-2 align-items-end">
+              <div class="col-md-3">
+                <label class="fw-bold mb-1">Type</label>
+                <select id="bank-type" class="form-select form-select-sm">
+                  <option value="gain">Gains</option>
+                  <option value="loss">Pertes</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="fw-bold mb-1">Début</label>
+                <input id="bank-start" type="date" class="form-control form-control-sm" value="${weekAgo}"/>
+              </div>
+              <div class="col-md-3">
+                <label class="fw-bold mb-1">Fin</label>
+                <input id="bank-end" type="date" class="form-control form-control-sm" value="${todayYmd}"/>
+              </div>
+              <div class="col-md-3">
+                <button id="bank-calc" class="btn btn-info w-100"><i class="fa-solid fa-calculator me-2"></i>Calculer</button>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <span class="pill"><i class="fa-solid fa-chart-line"></i><span>Total période :</span><span id="bank-total-period">—</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+          <div class="h5 mb-0 fw-bold">Historique</div>
+          <div class="fw-bold">Lignes: ${hist.length}</div>
+        </div>
+
+        <div class="d-grid gap-2" id="bank-history">
+          ${
+            hist.length ? hist.slice(0, 40).map(x => `
+              <div class="history-item d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div>
+                  <div class="fw-bold">${humanDate(x.ts)}</div>
+                  <div class="${x.delta>=0?'delta-plus':'delta-minus'}">${x.delta>=0?'+':''}${moneyFR(x.delta)} $</div>
+                </div>
+                <div class="fw-bold">Total après: ${moneyFR(x.total)} $</div>
+              </div>
+            `).join('') : `<div class="history-item fw-bold">Aucun changement détecté.</div>`
+          }
+        </div>
+      </div>
+    </div>
+  `;
+
+  function betweenDates(ts, startYmd, endYmd){
+    if (!startYmd || !endYmd) return true;
+    const start = new Date(startYmd + "T00:00:00").getTime();
+    const end = new Date(endYmd + "T23:59:59").getTime();
+    return ts >= start && ts <= end;
+  }
+
+  document.getElementById('bank-calc').addEventListener('click', () => {
+    const type = document.getElementById('bank-type').value;
+    const start = document.getElementById('bank-start').value;
+    const end = document.getElementById('bank-end').value;
+
+    let total = 0;
+    for (const x of hist){
+      if (!betweenDates(x.ts, start, end)) continue;
+      if (type === 'gain' && x.delta > 0) total += x.delta;
+      if (type === 'loss' && x.delta < 0) total += Math.abs(x.delta);
+    }
+    document.getElementById('bank-total-period').textContent = moneyFR(total) + ' $';
+  });
+}
+
+/* -------- Points -------- */
+async function loadPoints(){
+  const data = await fetchAPI(`${API_BASE}/darkrp/familles/${familyId}/infos`);
+  if (data.error){
+    contentArea.innerHTML = `<div class="card"><div class="card-body"><div class="alert alert-warning mb-0"><strong>Erreur :</strong> impossible de charger les points.</div></div></div>`;
+    return;
+  }
+  const points = (data.points ?? data.data?.points ?? 0);
+
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-3">Points famille</h1>
+    <div class="card">
+      <div class="card-body">
+        <div class="fw-bold mb-1" style="color:var(--accent) !important;">Total</div>
+        <div class="display-5 fw-bold">${escapeHtml(normalizePoints(points))}</div>
+      </div>
+    </div>
+  `;
+}
+
+/* -------- Classement -------- */
+async function loadClassement(){
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-3">Classement (Points)</h1>
+    <div class="card"><div class="card-body fw-bold">Chargement…</div></div>
+  `;
+
+  const results = [];
+  for (const fam of FAMILY_IDS){
+    const r = await fetchAPI(`${API_BASE}/darkrp/familles/${fam}/infos`);
+    if (r.error){
+      // ✅ Tu voulais: indisponible => 0 point
+      results.push({ name:fam, points:"0" });
+    } else {
+      const pts = (r.points ?? r.data?.points ?? 0);
+      results.push({ name:fam, points: normalizePoints(pts) });
+    }
+  }
+
+  // tri numérique robuste
+  results.sort((a,b) => (Number(b.points)||0) - (Number(a.points)||0));
+
+  const top1 = results[0] || {name:'—',points:"0"};
+  const top2 = results[1] || {name:'—',points:"0"};
+  const top3 = results[2] || {name:'—',points:"0"};
+
+  const list = results.map((x, idx) => {
+    const cls = idx===0?'rank-1': idx===1?'rank-2': idx===2?'rank-3':'';
+    return `
+      <div class="list-row ${cls}">
+        <div class="d-flex align-items-center gap-12">
+          <div class="num">${idx+1}</div>
+          <div><div class="fw-bold">${escapeHtml(x.name)}</div></div>
+        </div>
+        <div class="fw-bold">${escapeHtml(String(x.points))}</div>
+      </div>
+    `;
+  }).join('');
+
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-3">Classement (Points)</h1>
+
+    <div class="podium mb-4">
+      <div class="card pod">
+        <div class="card-body">
+          <div class="pill"><i class="fa-solid fa-trophy"></i><span class="rank-1">Top 1</span></div>
+          <div class="mt-3 fw-bold" style="font-size:1.25rem;">${escapeHtml(top1.name)}</div>
+          <div class="mt-1 fw-bold rank-1" style="font-size:1.8rem;">${escapeHtml(String(top1.points))}</div>
+        </div>
+      </div>
+
+      <div class="card pod">
+        <div class="card-body">
+          <div class="pill"><i class="fa-solid fa-medal"></i><span class="rank-2">Top 2</span></div>
+          <div class="mt-3 fw-bold" style="font-size:1.25rem;">${escapeHtml(top2.name)}</div>
+          <div class="mt-1 fw-bold rank-2" style="font-size:1.6rem;">${escapeHtml(String(top2.points))}</div>
+        </div>
+      </div>
+
+      <div class="card pod">
+        <div class="card-body">
+          <div class="pill"><i class="fa-solid fa-medal"></i><span class="rank-3">Top 3</span></div>
+          <div class="mt-3 fw-bold" style="font-size:1.25rem;">${escapeHtml(top3.name)}</div>
+          <div class="mt-1 fw-bold rank-3" style="font-size:1.6rem;">${escapeHtml(String(top3.points))}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="h5 fw-bold mb-3">Toutes les familles</div>
+        ${list}
+      </div>
+    </div>
+  `;
+}
+
+/* -------- Contribution (AUTO via banklogs) -------- */
+async function loadContribution(){
+  const weekStartMs = getSaturday1930Start(Date.now());
+  const weekStart = new Date(weekStartMs);
+  const weekEnd = new Date(weekStartMs + 7*86400000);
+
+  // members + pseudo map
+  const memData = await fetchAPI(`${API_BASE}/darkrp/familles/${familyName}/members`);
+  const members = (!memData.error && Array.isArray(memData.data)) ? memData.data : [];
+  const meta = loadMemberMeta();
+
+  const pseudoBySteam = {};
+  for (const m of members){
+    pseudoBySteam[m.steamid] = meta[m.steamid]?.pseudo || m.steamid;
+  }
+
+  // ✅ Banklogs API (si existe)
+  // NOTE: ton doc semble indiquer: /darkrp/familles/{familyName}/banklogs
+  const logsRes = await fetchAPI(`${API_BASE}/darkrp/familles/${familyName}/banklogs?limit=200`);
+
+  let rows = [];
+  if (!logsRes.error){
+    // support formats
+    if (Array.isArray(logsRes.data)) rows = logsRes.data;
+    else if (Array.isArray(logsRes.data?.data)) rows = logsRes.data.data;
+    else if (Array.isArray(logsRes.data?.data?.data)) rows = logsRes.data.data.data;
+  }
+
+  // filtre semaine
+  const weekRows = rows.filter(x => {
+    const ts = x.date ? Date.parse(x.date) : 0;
+    return ts && ts >= weekStartMs && ts < (weekStartMs + 7*86400000);
+  });
+
+  // agrégation
+  const perSteam = {};
+  function ensure(steam){
+    if (!perSteam[steam]) perSteam[steam] = { deposit:0, withdraw:0, net:0 };
+    return perSteam[steam];
+  }
+
+  for (const x of weekRows){
+    const steam = x.steamid || x.steamid64 || "";
+    const type = String(x.type || "").toLowerCase();
+    const amount = Number(x.money ?? x.amount ?? 0) || 0;
+
+    const s = ensure(steam || "unknown");
+    if (type.includes("deposit")) s.deposit += amount;
+    else s.withdraw += amount;
+  }
+  for (const k of Object.keys(perSteam)){
+    perSteam[k].net = perSteam[k].deposit - perSteam[k].withdraw;
+  }
+
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-3">Contribution</h1>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="fw-bold" style="color:var(--accent) !important;">Semaine (samedi 19h30 → samedi 19h30)</div>
+            <div class="fw-bold mt-1">
+              ${weekStart.toLocaleDateString('fr-FR')} ${weekStart.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
+              → ${weekEnd.toLocaleDateString('fr-FR')} ${weekEnd.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
+            </div>
+            <div class="divider"></div>
+            <div class="fw-bold">${logsRes.error ? "BankLogs indisponible (API 404/429) ⚠️" : "BankLogs connecté ✅"}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="h5 fw-bold mb-3">Derniers mouvements (API)</div>
+            <div id="contrib-list" class="d-grid gap-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="h5 fw-bold mb-3">Résumé par joueur (semaine)</div>
+        <div id="contrib-summary" class="d-grid gap-2"></div>
+      </div>
+    </div>
+  `;
+
+  // list
+  const listWrap = document.getElementById("contrib-list");
+  if (logsRes.error){
+    listWrap.innerHTML = `<div class="history-item fw-bold">Impossible d'afficher les contributions automatiquement (banklogs indisponible).</div>`;
+  } else if (!weekRows.length){
+    listWrap.innerHTML = `<div class="history-item fw-bold">Aucun mouvement sur la semaine.</div>`;
+  } else {
+    listWrap.innerHTML = weekRows.slice(0,60).map(x => {
+      const steam = x.steamid || x.steamid64 || "";
+      const pseudo = pseudoBySteam[steam] || steam || "—";
+      const type = String(x.type || "log");
+      const ts = x.date ? Date.parse(x.date) : Date.now();
+      const amount = Number(x.money ?? x.amount ?? 0) || 0;
+      const isPlus = String(type).toLowerCase().includes("deposit");
+      return `
+        <div class="history-item d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <div class="fw-bold">${escapeHtml(pseudo)}</div>
+            <div class="fw-bold">${escapeHtml(type)} · ${humanDate(ts)}</div>
+          </div>
+          <div class="${isPlus ? 'delta-plus':'delta-minus'}">${isPlus?'+':'-'}${moneyFR(amount)} $</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // summary
+  const sumWrap = document.getElementById("contrib-summary");
+
+  const steamsInFamily = members.map(m => m.steamid);
+  const lines = steamsInFamily.map(steam => {
+    const pseudo = pseudoBySteam[steam] || steam;
+    const s = perSteam[steam] || { deposit:0, withdraw:0, net:0 };
+    return `
+      <div class="history-item d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="fw-bold">${escapeHtml(pseudo)}</div>
+        <div class="fw-bold">
+          <span class="delta-plus">+${moneyFR(s.deposit)}$</span>
+          · <span class="delta-minus">-${moneyFR(s.withdraw)}$</span>
+          · <span class="delta-net">Net: ${moneyFR(s.net)}$</span>
+        </div>
+      </div>
+    `;
+  });
+
+  sumWrap.innerHTML = lines.length ? lines.join('') : `<div class="history-item fw-bold">Aucun membre.</div>`;
+}
+
+/* -------- Playtime -------- */
+async function loadPlaytime(){
+  const store = ensurePlayStore();
+  const weekStart = new Date(store.week.start);
+  const weekEnd = new Date(store.week.start + 7*86400000);
+
+  const memData = await fetchAPI(`${API_BASE}/darkrp/familles/${familyName}/members`);
+  const members = (!memData.error && Array.isArray(memData.data)) ? memData.data : [];
+  const meta = loadMemberMeta();
+
+  const pseudoBySteam = {};
+  for (const m of members){
+    pseudoBySteam[m.steamid] = meta[m.steamid]?.pseudo || m.steamid;
+  }
+
+  // Endpoint playtime depuis doc (tu m’avais cité: /api/darkrp/familles/playtime)
+  const headers = {};
+  if (PLAYTIME_TOKEN){
+    // si tu mets "Bearer xxx" ça marche, sinon tu peux mettre juste le token
+    headers["Authorization"] = PLAYTIME_TOKEN.includes("Bearer") ? PLAYTIME_TOKEN : ("Bearer " + PLAYTIME_TOKEN);
+  }
+
+  const pt = await fetchAPI(`${API_BASE}/darkrp/familles/playtime`, { headers });
+  let dataMap = null;
+
+  if (!pt.error){
+    if (pt.data && typeof pt.data === "object") dataMap = pt.data;
+    if (pt.data?.data && typeof pt.data.data === "object") dataMap = pt.data.data;
+  }
+
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-3">Playtime</h1>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="fw-bold" style="color:var(--accent) !important;">Semaine (samedi 19h30 → samedi 19h30)</div>
+            <div class="fw-bold mt-1">
+              ${weekStart.toLocaleDateString('fr-FR')} ${weekStart.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
+              → ${weekEnd.toLocaleDateString('fr-FR')} ${weekEnd.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
+            </div>
+            <div class="divider"></div>
+            <div class="fw-bold">${dataMap ? "API Playtime ✅" : "API Playtime indisponible ⚠️"}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="h5 fw-bold mb-3">Joueurs</div>
+            <div id="pt-list" class="d-grid gap-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="h5 fw-bold mb-3">Historique (archives)</div>
+        <div id="pt-archives" class="d-grid gap-2"></div>
+      </div>
+    </div>
+  `;
+
+  if (dataMap && typeof dataMap === "object"){
+    store.week.snapshot = dataMap;
+    savePlayStore(store);
+  }
+
+  const listWrap = document.getElementById("pt-list");
+  if (!dataMap){
+    listWrap.innerHTML = `<div class="history-item fw-bold">Impossible de récupérer le playtime (API 404/429, token manquant, ou format non reconnu).</div>`;
+  } else {
+    const entries = Object.entries(dataMap);
+    entries.sort((a,b)=> Number(b[1]) - Number(a[1]));
+    listWrap.innerHTML = entries.slice(0,50).map(([k,v]) => {
+      const pseudo = pseudoBySteam[k] || k;
+      return `
+        <div class="history-item d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div class="fw-bold">${escapeHtml(pseudo)}</div>
+          <div class="fw-bold">${escapeHtml(k)}</div>
+          <div class="pill"><i class="fa-solid fa-clock"></i><span>${fmtSecondsToHMS(v)}</span></div>
+        </div>
+      `;
+    }).join('') || `<div class="history-item fw-bold">Aucune donnée.</div>`;
+  }
+
+  const archWrap = document.getElementById("pt-archives");
+  if (!store.archives.length){
+    archWrap.innerHTML = `<div class="history-item fw-bold">Aucune archive pour le moment.</div>`;
+  } else {
+    archWrap.innerHTML = store.archives.slice(0,10).map(a => {
+      const snap = a.snapshot || {};
+      const top = Object.entries(snap).sort((x,y)=>Number(y[1])-Number(x[1])).slice(0,6);
+      return `
+        <div class="history-item">
+          <div class="fw-bold">Semaine démarrée: ${new Date(a.start).toLocaleString('fr-FR')}</div>
+          <div class="divider"></div>
+          <div class="d-grid gap-2">
+            ${top.map(([k,v]) => `
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="fw-bold">${escapeHtml(k)}</div>
+                <div class="pill"><i class="fa-solid fa-clock"></i><span>${fmtSecondsToHMS(v)}</span></div>
+              </div>
+            `).join('') || `<div class="fw-bold">—</div>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+/* -------- Docs -------- */
+async function loadDocs(){
+  const logoSrc = (LOGO_BASE64 && LOGO_BASE64.length > 50)
+    ? "data:image/png;base64," + LOGO_BASE64
+    : document.getElementById("sidebarLogo").src;
+
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-4">RÈGLEMENT OFFICIEL - FAMILLE THE WOLF</h1>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-start">
+
+          <div class="col-lg-7">
+            <h4 class="fw-bold mb-3">1. Identité et esprit de la Famille</h4>
+            <p class="fw-bold">
+              La Famille The Wolf est une organisation criminelle RP structurée, sérieuse et immersive.
+            </p>
+            <ul class="fw-bold">
+              <li>Loyauté absolue envers la Famille</li>
+              <li>Respect strict de la hiérarchie</li>
+              <li>RP sérieux uniquement</li>
+              <li>Le pack passe avant l'individu</li>
+            </ul>
+
+            <h4 class="fw-bold mt-4">2. Hiérarchie et obéissance</h4>
+            <ul class="fw-bold">
+              <li>Respect strict de la chaîne de commandement</li>
+              <li>Un ordre supérieur ne se discute pas (sauf incohérence RP grave)</li>
+              <li>Aucun membre n'agit sans validation d'un grade supérieur</li>
+              <li>The Alpha Wolf a l'autorité finale</li>
+              <li>Refus d'obéissance = faute RP grave</li>
+            </ul>
+
+            <h4 class="fw-bold mt-4">3. Recrutement</h4>
+            <ul class="fw-bold">
+              <li>Recrutement strictement interne</li>
+              <li>Période de test RP obligatoire</li>
+              <li>Aucune info sensible aux bas grades</li>
+              <li>Favoritisme HRP interdit</li>
+            </ul>
+          </div>
+
+          <div class="col-lg-5 text-center">
+            <img class="rules-logo" src="${logoSrc}" alt="Logo">
+          </div>
+
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* -------- Paramètres -------- */
+async function loadSettings(){
+  const currentHash = getAdminHash();
+  const isDefault = currentHash === DEFAULT_ADMIN_PASS_SHA256;
+
+  contentArea.innerHTML = `
+    <h1 class="h2 mb-3">Paramètres</h1>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="h5 fw-bold mb-2">Changer le code Admin (PIN 4 chiffres)</div>
+        <div class="fw-bold mb-3">Sécurité : code 6 chiffres requis.</div>
+
+        <div class="row g-2">
+          <div class="col-md-4">
+            <label class="fw-bold mb-1">Code sécurité (6 chiffres)</label>
+            <input id="sec-code" class="form-control" inputmode="numeric" maxlength="6" placeholder="091103"/>
+          </div>
+
+          <div class="col-md-4">
+            <label class="fw-bold mb-1">Nouveau PIN admin (4 chiffres)</label>
+            <input id="new-pin" class="form-control" inputmode="numeric" maxlength="4" placeholder="0000"/>
+          </div>
+
+          <div class="col-md-4">
+            <label class="fw-bold mb-1">Confirmer PIN</label>
+            <input id="new-pin2" class="form-control" inputmode="numeric" maxlength="4" placeholder="0000"/>
+          </div>
+
+          <div class="col-12 mt-2">
+            <button id="save-pin" class="btn btn-info"><i class="fa-solid fa-floppy-disk me-2"></i>Enregistrer</button>
+            <button id="reset-pin" class="btn btn-outline-light ms-2"><i class="fa-solid fa-rotate-left me-2"></i>Revenir au PIN par défaut</button>
+          </div>
+
+          <div class="col-12 mt-3">
+            <div class="history-item fw-bold">
+              Statut: ${isDefault ? "PIN admin = par défaut" : "PIN admin = personnalisé (stocké localement)"}
+            </div>
+            <div id="settings-msg" class="mt-2 fw-bold"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const msg = document.getElementById("settings-msg");
+
+  document.getElementById("save-pin").addEventListener("click", async () => {
+    const sec = (document.getElementById("sec-code").value || "").trim();
+    const p1 = (document.getElementById("new-pin").value || "").trim();
+    const p2 = (document.getElementById("new-pin2").value || "").trim();
+
+    msg.textContent = "";
+    msg.style.color = "#fff";
+
+    if (sec !== SECURITY_CODE){
+      msg.textContent = "❌ Code sécurité incorrect.";
+      msg.style.color = "#ff7c7c";
+      return;
+    }
+    if (!/^\d{4}$/.test(p1) || !/^\d{4}$/.test(p2)){
+      msg.textContent = "❌ Le PIN doit faire 4 chiffres.";
+      msg.style.color = "#ff7c7c";
+      return;
+    }
+    if (p1 !== p2){
+      msg.textContent = "❌ Les deux PIN ne correspondent pas.";
+      msg.style.color = "#ff7c7c";
+      return;
+    }
+
+    const h = await sha256Hex(p1);
+    localStorage.setItem(ADMIN_HASH_KEY, h);
+    msg.textContent = "✅ PIN admin mis à jour. (pense à te reconnecter en admin)";
+    msg.style.color = "#7CFFB2";
+  });
+
+  document.getElementById("reset-pin").addEventListener("click", () => {
+    localStorage.removeItem(ADMIN_HASH_KEY);
+    msg.textContent = "✅ Retour au PIN admin par défaut.";
+    msg.style.color = "#7CFFB2";
+  });
+}
+
+/* Boot */
+loadSection('membres');
+</script>
+</body>
+</html>
